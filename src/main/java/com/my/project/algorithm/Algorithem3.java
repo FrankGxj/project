@@ -2,6 +2,7 @@ package com.my.project.algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -24,9 +25,9 @@ public class Algorithem3 {
     * int型数组b，包含10个元素。统计a数组中的元素对10求余等于0的个数，保存
     *  到b[0]中；对10求余等于1的个数，保存到b[1]中，……依此类推。
     * */
-        public static void main(String args[])
+    public static void main(String args[])
         {
-            method5();
+            method6();
         }
     public static void  method2()
     {
@@ -140,6 +141,28 @@ public class Algorithem3 {
         for(int j=0;j<arr1.length;j++)
         {
             System.out.println(arr1[j]);
+        }
+    }
+    public static void method6()
+    {
+        int []a=new int[100];
+        int []b=new int[10];
+        Random random = new Random();
+        int j=0;
+        for(int i=0;i<a.length;i++) {
+            int ran=(int)(Math.random()*9000)+1000;
+            a[i]=ran;
+            if(ran%10==0)
+            {
+                b[j]=ran;
+                j++;
+            }
+        }
+        for(int i=0;i<a.length;i++) {
+            System.out.println("a是："+a[i]);
+        }
+        for(int i=0;i<b.length;i++) {
+            System.out.println("b是："+b[i]);
         }
     }
  }
