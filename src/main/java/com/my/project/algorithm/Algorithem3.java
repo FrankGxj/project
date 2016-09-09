@@ -116,12 +116,17 @@ public class Algorithem3 {
     public static void method5()
     {
         //倒排在于将最后一个放在第一个，倒数第二个放在正数第二个，如果当数组排到一半的时候，剩下的就不用继续排了，所以取一半
-        int[] arr1=new int[5];
-        arr1[0]=5;
+        int[] arr1=new int[10];
+        arr1[0]=1;
         arr1[1]=2;
         arr1[2]=3;
         arr1[3]=4;
-        arr1[4]=0;
+        arr1[4]=5;
+        arr1[5]=6;
+        arr1[6]=7;
+        arr1[7]=8;
+        arr1[8]=9;
+        arr1[9]=10;
         int temp=0;
         int i=arr1.length;
         while(i>arr1.length/2)
