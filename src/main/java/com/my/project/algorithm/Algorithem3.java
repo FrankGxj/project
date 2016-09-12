@@ -24,10 +24,27 @@ public class Algorithem3 {
     * 6,要求定义一个int型数组a,包含100个元素,保存100个随机的4位数。再定义一个
     * int型数组b，包含10个元素。统计a数组中的元素对10求余等于0的个数，保存
     *  到b[0]中；对10求余等于1的个数，保存到b[1]中，……依此类推。
+    *
+    *  7,定义一个20*5的二维数组，用来存储某班级20位学员的5门课的成绩；这5门课
+    *  按存储顺序依次为：core C++，coreJava，Servlet，JSP和EJB。
+    *  （1）循环给二维数组的每一个元素赋0~100之间的随机整数。
+    *  （2）按照列表的方式输出这些学员的每门课程的成绩。
+    *  （3）要求编写程序求每个学员的总分，将其保留在另外一个一维数组中。
+    *  （4）要求编写程序求所有学员的某门课程的平均分。
+    *
+    *  8,完成九宫格程序在井字形的格局中(只能是奇数格局)，放入数字(数字由)，使每行每列以及斜角线的和都相等
+    *  经验规则：从 1 开始按顺序逐个填写； 1  放在第一行的中间位置；下一个数往右上角45度处填写；
+    *  如果单边越界则按头尾相接地填；如果有填写冲突，则填到刚才位置的底下一格；
+    *  如果有两边越界，则填到刚才位置的底下一格。
+    *  个人认为，可以先把最中间的数填到九宫格的最中间位置；再按上面的规则逐个填写，而且
+    *  填的时候还可以把头尾对应的数填到对应的格子中。(第 n 个值跟倒数第 n 个值对应，格局上以最中间格为轴心对应)
+    *  这样就可以同时填两个数，效率比之前更高；其正确性有待数学论证(但多次实验之后都没发现有错)。
+    *  九宫格的 1 至少还可以填在另外的三个位置，只是接下来的填写顺序需要相应改变；
+    *  再根据九宫格的对称性，至少可以有8种不同的填写方式
     * */
     public static void main(String args[])
         {
-            method6();
+            method7();
         }
     public static void  method2()
     {
@@ -147,7 +164,6 @@ public class Algorithem3 {
     {
         int []a=new int[100];
         int []b=new int[10];
-        Random random = new Random();
         int j=0;
         for(int i=0;i<a.length;i++) {
             int ran=(int)(Math.random()*9000)+1000;
@@ -164,5 +180,39 @@ public class Algorithem3 {
         for(int i=0;i<b.length;i++) {
             System.out.println("b是："+b[i]);
         }
+    }
+    public static void method7()
+    {
+        String[] ss={"core C++","coreJava","Servlet","JSP","EJB"};
+        int [][]arr1=new int[20][5];
+        int[]arr2=new int[20];
+        for(int i=0;i<arr1.length;i++)
+        {
+            for(int j=0;j<arr1[i].length;j++)
+            {
+                Random random=new Random();
+                int k = random.nextInt(100);
+                arr1[i][j]=k;
+            }
+        }
+        for(int i=0;i<ss.length;i++)
+        {
+            System.out.print(ss[i]+" ");
+        }
+        System.out.println("");
+        int total=0,classAvg=0;
+        for(int i=0;i<arr1.length;i++) {
+            for (int j = 0; j < arr1[i].length; j++){
+                System.out.print(arr1[i][j]+" ");
+                total += arr1[i][j];
+            }
+            arr2[i]=total;
+            System.out.println("");
+        }
+        for(int i=0;i<arr1.length;i++) {
+            classAvg+=arr1[i][0];
+        }
+        classAvg=classAvg/20;
+        System.out.println("core C++平均分是 "+classAvg);
     }
  }

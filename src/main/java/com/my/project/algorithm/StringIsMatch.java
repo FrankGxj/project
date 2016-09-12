@@ -9,24 +9,24 @@ import java.util.Map;
  * Created by gxj on 2016/9/6.
  */
 public class StringIsMatch {
-    public static void main(String[] args)
-    {
-        String s1="ednbjkxcdsdf";
-        String s2="ednb";
-        BigInteger bigInteger1 = getTotal(s1);
-        BigInteger bigInteger2=getTotal(s2);
-        //两个字符串积取模为0匹配，否则不匹配
-        BigInteger result= bigInteger1.mod(bigInteger2);
-        if(result.toString()=="0")
-        {
-            System.out.println("两个字符串匹配");
-        }
-        else
-        {
-            System.out.println("两个字符串不匹配");
-        }
-
-    }
+//    public static void main(String[] args)
+//    {
+//        String s1="ednbjkxcdsdf";
+//        String s2="ednb";
+//        BigInteger bigInteger1 = getTotal(s1);
+//        BigInteger bigInteger2=getTotal(s2);
+//        //两个字符串积取模为0匹配，否则不匹配
+//        BigInteger result= bigInteger1.mod(bigInteger2);
+//        if(result.toString()=="0")
+//        {
+//            System.out.println("两个字符串匹配");
+//        }
+//        else
+//        {
+//            System.out.println("两个字符串不匹配");
+//        }
+//
+//    }
     //将指定字符串按照质数的积返回
     public static BigInteger getTotal(String s1)
     {
