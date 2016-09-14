@@ -97,7 +97,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="9"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="86fbe" class="javax.swing.JTextField" binding="t10">
@@ -227,7 +227,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="bbb"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="1e2f5" class="javax.swing.JTextField" binding="t12">
