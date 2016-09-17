@@ -94,6 +94,7 @@ public class Sudo {
     private JTextField t81;
 
     private JButton make;
+    private JButton unlock;
     public JTextField[] fileds={t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,t17,t18,t19,t20,t21,t22,t23,t24,t25,t26,t27,t28,t29,t30,t31,t32,t33,t34,t35,t36,t37,t38,t39,t40,t41,
             t42,t43,t44,t45,t46,t47,t48,t49,t50,t51,t52,t53,t54,t55,t56,t57,t58,t59,t60,t61,t62,t63,t64,t65,t66,t67,t68,t69,t70,t71,t72,t73,t74,t75,t76,t77,t78,t79,t80,t81};
     /*
@@ -105,6 +106,7 @@ public class Sudo {
     * */
     Random random = new Random();
     List<Integer> listRandomIsExists=new ArrayList<Integer>();//随机格子
+    JTextField [][]arr1=new JTextField[9][9];
     public Sudo() {
         make.addActionListener(new ActionListener() {
             @Override
@@ -115,6 +117,11 @@ public class Sudo {
                     jTextField.setText("");
                 }
                 getValue();
+            }
+        });
+        unlock.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                fillAll();
             }
         });
     }
@@ -130,7 +137,7 @@ public class Sudo {
 
     public void getValue()
     {
-       JTextField [][]arr1=new JTextField[9][9];
+
         //将控件赋予数组
         int k=0;
         for(int i=0;i<arr1.length;i++)
@@ -148,10 +155,8 @@ public class Sudo {
             int z = (int) (Math.random() * 3) + 3;//随机格子数
             for(int j=0;j<z;j++)
             {
-
                 int x = random.nextInt(9);//随机格子
                 x=isRandom(x);
-                //x = isValue(i,x,arr1);
                 int y = getMatch1(arr1,i,x);
                 arr1[i][x].setText(String.valueOf(y));
 
@@ -193,29 +198,27 @@ public class Sudo {
     public int getMatch1(JTextField [][]arr1,int i,int x)
     {
         int result=0;
-        boolean isStopByColumn=true;
-        while(isStopByColumn)
-        {
-            int y = (int)(Math.random()*9)+1;
-            boolean b1=false,b2=false;
-            if(!isGetMatchByRampant(arr1,i,x,y) || !isGetMatchByColumn(arr1,i,x,y))
-            {
-                y = (int)(Math.random()*9)+1;
-                b1 = isGetMatchByRampant(arr1,i,x,y);
-                b2 = isGetMatchByColumn(arr1,i,x,y);
-            }
-            else
-            {
-                b1=true;
-                b2=true;
-            }
-            if(b1 && b2)
-            {
-                result=y;
-                isStopByColumn=false;
-            }
+        try {
+            boolean isStopByColumn = true;
+            while (isStopByColumn) {
+                int y = (int) (Math.random() * 9) + 1;
+                boolean b1 = false, b2 = false;
+                if (!isGetMatchByRampant(arr1, i, x, y) || !isGetMatchByColumn(arr1, i, x, y)) {
+                    y = (int) (Math.random() * 9) + 1;
+                    b1 = isGetMatchByRampant(arr1, i, x, y);
+                    b2 = isGetMatchByColumn(arr1, i, x, y);
+                } else {
+                    b1 = true;
+                    b2 = true;
+                }
+                if (b1 && b2) {
+                    result = y;
+                    isStopByColumn = false;
+                }
 
-        }
+            }
+        }catch (Exception e)
+        {System.out.println(e.getMessage());}
         return result;
     }
     public boolean isGetMatchByRampant(JTextField [][]arr1,int i,int x,int y)
@@ -243,16 +246,19 @@ public class Sudo {
         }
         return true;
     }
-    public int isValue(int i,int x,JTextField [][]arr1)//判断这个区间内有没有值
+    public void fillAll()//填充数据
     {
-        Random random = new Random();
-        if(!arr1[i][x].getText().equals(""))
+        for(int i=0;i<arr1.length;i++)
         {
-            x = random.nextInt(9);//随机格子
-            isValue(i,x,arr1);
+            for(int j=0;j<arr1[i].length;j++)
+            {
+                if(arr1[i][j].getText().equals(""))
+                {
+                    int y = getMatch1(arr1,i,j);
+                    arr1[i][j].setText(String.valueOf(y));
+                }
+            }
         }
-
-        return x;
     }
     public int getMatch(JTextField [][]arr1,int i,int x)
     {
