@@ -98,10 +98,16 @@ public class Sudo {
             t42,t43,t44,t45,t46,t47,t48,t49,t50,t51,t52,t53,t54,t55,t56,t57,t58,t59,t60,t61,t62,t63,t64,t65,t66,t67,t68,t69,t70,t71,t72,t73,t74,t75,t76,t77,t78,t79,t80,t81};
 
     Random random = new Random();
+    List<Integer> listRandomIsExists=new ArrayList<Integer>();//随机格子
     public Sudo() {
         make.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                for(int i=0;i<fileds.length;i++)
+                {
+                    JTextField jTextField=fileds[i];
+                    jTextField.setText("");
+                }
                 getValue();
             }
         });
@@ -137,28 +143,100 @@ public class Sudo {
             for(int j=0;j<z;j++)
             {
 
-                int x = random.nextInt(8);//随机格子
+                int x = random.nextInt(9);//随机格子
                 x=isRandom(x);
                 //x = isValue(i,x,arr1);
-                int y = getMatch(arr1,i,x);
+                int y = getMatch1(arr1,i,x);
                 arr1[i][x].setText(String.valueOf(y));
 
             }
+            listRandomIsExists.clear();
         }
     }
-    List<Integer> listRandomIsExists=new ArrayList<Integer>();
     public int isRandom(int x)
     {
-        for(int i=0;i<listRandomIsExists.size();i++)
-        {
-            if(listRandomIsExists.get(i)==x)
+        if(listRandomIsExists.size()==0)
             {
                 listRandomIsExists.add(x);
-                x = random.nextInt(8);//随机格子
-                isRandom(x);
+                return x;
+            }
+            boolean isStop=true;
+            while(isStop)
+            {
+                if(!isRhghtValue(x))
+                {
+                    x = random.nextInt(9);
+                }
+                else
+                {
+                    listRandomIsExists.add(x);
+                    isStop=false;
+                }
+            }
+            return x;
+    }
+
+    public boolean isRhghtValue(int x) {
+        for (int i = 0; i < listRandomIsExists.size(); i++) {
+            if (listRandomIsExists.get(i) == x) {
+                return false;
             }
         }
-        return x;
+        return true;
+    }
+    public int getMatch1(JTextField [][]arr1,int i,int x)
+    {
+        int result=0;
+        boolean isStopByRampant=true;
+        boolean isStopByColumn=true;
+        while(isStopByColumn)
+        {
+            int y = (int)(Math.random()*9)+1;
+            boolean b1=false,b2=false;
+            if(!isGetMatchByRampant(arr1,i,x,y) || !isGetMatchByColumn(arr1,i,x,y))
+            {
+                y = (int)(Math.random()*9)+1;
+                b1 = isGetMatchByRampant(arr1,i,x,y);
+                b2 = isGetMatchByColumn(arr1,i,x,y);
+            }
+            else
+            {
+                b1=true;
+                b2=true;
+            }
+            if(b1 && b2)
+            {
+                result=y;
+                isStopByColumn=false;
+            }
+
+        }
+        return result;
+    }
+    public boolean isGetMatchByRampant(JTextField [][]arr1,int i,int x,int y)
+    {
+        for(int m=0;m<9;m++) {
+            if (m == x)
+                continue;
+            if(String.valueOf(y).equals(arr1[i][m].getText()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isGetMatchByColumn(JTextField [][]arr1,int i,int x,int y)
+    {
+
+        for(int m=0;m<9;m++) {
+            if(m == i)
+                continue;
+            if(String.valueOf(y).equals(arr1[m][x].getText()))
+            {
+                return false;
+            }
+        }
+        return true;
     }
     public int isValue(int i,int x,JTextField [][]arr1)//判断这个区间内有没有值
     {
@@ -176,7 +254,9 @@ public class Sudo {
         int y = (int)(Math.random()*9)+1;
             for(int m=0;m<9;m++)
             {
-
+                System.out.println("第"+m+"行第"+i+"列数字是"+y);
+                if(m==x)
+                    continue;
                 if(String.valueOf(y).equals(arr1[i][m].getText()))
                 {
                     getMatch(arr1,i,x);
@@ -184,8 +264,9 @@ public class Sudo {
             }
             for(int m=0;m<9;m++)
             {
-
-                if(String.valueOf(y).equals(arr1[x][m].getText()))
+                if(m==i)
+                    continue;
+                if(String.valueOf(y).equals(arr1[m][x].getText()))
                 {
                     getMatch(arr1,i,x);
                 }
