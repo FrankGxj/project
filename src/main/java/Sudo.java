@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by gxj on 2016/9/12.
@@ -107,6 +105,7 @@ public class Sudo {
     Random random = new Random();
     List<Integer> listRandomIsExists=new ArrayList<Integer>();//随机格子
     JTextField [][]arr1=new JTextField[9][9];
+    GetIJ getIJ = null;
     public Sudo() {
         make.addActionListener(new ActionListener() {
             @Override
@@ -224,8 +223,8 @@ public class Sudo {
     public boolean isGetMatchByRampant(JTextField [][]arr1,int i,int x,int y)
     {
         for(int m=0;m<9;m++) {
-            if (m == x)
-                continue;
+            //if (m == x)
+               // continue;
             if(String.valueOf(y).equals(arr1[i][m].getText()))
             {
                 return false;
@@ -237,8 +236,8 @@ public class Sudo {
     {
 
         for(int m=0;m<9;m++) {
-            if(m == i)
-                continue;
+           // if(m == i)
+             //   continue;
             if(String.valueOf(y).equals(arr1[m][x].getText()))
             {
                 return false;
@@ -246,19 +245,102 @@ public class Sudo {
         }
         return true;
     }
+    List<SudoModel> list = new ArrayList<SudoModel>();
     public void fillAll()//填充数据
     {
+
         for(int i=0;i<arr1.length;i++)
         {
             for(int j=0;j<arr1[i].length;j++)
             {
+                int z=0;
                 if(arr1[i][j].getText().equals(""))
                 {
-                    int y = getMatch1(arr1,i,j);
-                    arr1[i][j].setText(String.valueOf(y));
+                    int[] iis={1,2,3,4,5,6,7,8,9};
+                    for(;z<iis.length;z++)
+                    {
+                        if (!isGetMatchByRampant(arr1, i, j, iis[z]) || !isGetMatchByColumn(arr1, i, j, iis[z]))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            SudoModel sudoModel=new SudoModel();
+                            sudoModel.jTextField=arr1[i][j];
+                            sudoModel.value=iis[z];
+                            sudoModel.setI(i);
+                            sudoModel.setJ(j);
+                            list.add(sudoModel);
+                            arr1[i][j].setText(String.valueOf(iis[z]));
+                            break;
+                        }
+                    }
+                    if(z>=9) {
+                        getIJ=null;
+                        int indexOfMap = list.size()-1;
+                        GetIJ getIJ = getValue(arr1, list,indexOfMap);
+                        i=getIJ.getI();
+                        j=getIJ.getJ();
+                    }
                 }
             }
         }
+    }
+
+    public GetIJ getValue(JTextField [][] arr1,List<SudoModel> list,int indexOfMap)
+    {
+//        if(list.size()==1)
+//        {
+//            int value = list.get(indexOfMap).getValue();
+//            System.out.println(value);
+//            int ii = list.get(indexOfMap).getI();
+//            System.out.println(ii);
+//            int jj = list.get(indexOfMap).getJ();
+//            System.out.println(jj);
+//        }
+        if(getIJ!=null)
+            return getIJ;
+        boolean isGoOn=false;
+        int value = list.get(indexOfMap).getValue();
+        int ii = list.get(indexOfMap).getI();
+        int jj = list.get(indexOfMap).getJ();
+        arr1[ii][jj].setText("");
+
+        ++value;
+            for(;value<=9;value++) {
+                if (isFitValue(arr1, ii, jj, value)) {
+                    isGoOn = true;
+                    JTextField jTextField = list.get(indexOfMap).getjTextField();
+                    arr1[ii][jj].setText(String.valueOf(value));
+                    SudoModel sudoModel = new SudoModel();
+                    sudoModel.setI(ii);
+                    sudoModel.setJ(jj);
+                    sudoModel.setjTextField(jTextField);
+                    sudoModel.setValue(value);
+                    list.set(indexOfMap,sudoModel);
+                    getIJ = new GetIJ();
+                    getIJ.setI(ii);
+                    getIJ.setJ(jj);
+                    break;
+
+                }
+            }
+            if (value>9)
+            {
+                list.remove(indexOfMap);
+                int n=list.size();
+                getValue(arr1,list,--n);
+            }
+        return getIJ;
+
+    }
+    public boolean isFitValue(JTextField [][] arr1,int i,int j,int value)
+    {
+        boolean isFit = true;
+        if (!isGetMatchByRampant(arr1, i, j, value) || !isGetMatchByColumn(arr1, i, j, value)) {
+            isFit = false;
+        }
+        return isFit;
     }
     public int getMatch(JTextField [][]arr1,int i,int x)
     {
@@ -283,5 +365,65 @@ public class Sudo {
                 }
             }
         return y;
+    }
+    class GetIJ
+    {
+        public int i;
+        public int j;
+        public Integer getI() {
+            return i;
+        }
+
+        public void setI(int i)
+        {
+            this.i=i;
+        }
+        public Integer getJ() {
+            return j;
+        }
+
+        public void setJ(int j)
+        {
+            this.j=j;
+        }
+    }
+    class SudoModel {
+        public JTextField jTextField;
+        public int value;
+        public int i;
+        public int j;
+
+        public JTextField getjTextField() {
+            return jTextField;
+        }
+
+        public void setjTextField(JTextField jTextField) {
+            this.jTextField = jTextField;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+
+        public Integer getI() {
+            return i;
+        }
+
+        public void setI(int i)
+        {
+            this.i=i;
+        }
+        public Integer getJ() {
+            return j;
+        }
+
+        public void setJ(int j)
+        {
+            this.j=j;
+        }
     }
 }
