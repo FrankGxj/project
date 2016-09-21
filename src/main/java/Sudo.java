@@ -289,15 +289,6 @@ public class Sudo {
 
     public GetIJ getValue(JTextField [][] arr1,List<SudoModel> list,int indexOfMap)
     {
-//        if(list.size()==1)
-//        {
-//            int value = list.get(indexOfMap).getValue();
-//            System.out.println(value);
-//            int ii = list.get(indexOfMap).getI();
-//            System.out.println(ii);
-//            int jj = list.get(indexOfMap).getJ();
-//            System.out.println(jj);
-//        }
         if(getIJ!=null)
             return getIJ;
         boolean isGoOn=false;
